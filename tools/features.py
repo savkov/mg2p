@@ -2,13 +2,16 @@
 
 import pandas as pd
 
+from .config import IPA_HELP_FILE
+
+
 class G2PRule(object):
     
     unknown = '<unk>'
     
     def __init__(self):
         
-        df = pd.read_csv('/home/bpop/thesis/mg2p/data/deri-knight/ipa_help/all.g-to-ipa.cleaned.table', 
+        df = pd.read_csv(IPA_HELP_FILE,
                         sep='\t', names=['lang', 'junk', 'g', 'script', 'p', 'prob'])
         df['g'] = df['g'].str.replace(r' ', '')
         df['p'] = df['p'].str.replace(r' ', '')
