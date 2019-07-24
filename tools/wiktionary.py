@@ -7,10 +7,11 @@ Tools for reading Deri & Knight's wiktionary pronunciation data.
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from os.path import join
+from .config import PRON_TRAIN_FILE, PRON_TEST_FILE, IPA_HELP_FILE
 
-WIKTIONARY_TRAINING_PATH = '/home/bpop/thesis/mg2p/data/deri-knight/pron_data/gold_data_train'
-TEST_DATA_PATH = '/home/bpop/thesis/mg2p/data/deri-knight/pron_data/gold_data_test'
-IPAHELP_PATH = '/home/bpop/thesis/mg2p/data/deri-knight/ipa_help/all.g-to-ipa.cleaned.table'
+WIKTIONARY_TRAINING_PATH = PRON_TRAIN_FILE
+TEST_DATA_PATH = PRON_TEST_FILE
+IPAHELP_PATH = IPA_HELP_FILE
 
 HIGH_RESOURCE = ['ady', 'afr', 'ain', 'amh', 'ang', 'ara', 'arc', 'ast', 
                 'aze', 'bak', 'ben', 'bre', 'bul', 'cat', 'ces', 'cym', 
