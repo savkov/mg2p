@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 
-import sys
 from os.path import join, exists
 import os
 import subprocess
-import tools.wiktionary as wiki # weird things happen with imports
+import tools.wiktionary as wiki  # weird things happen with imports
 from tools.features import G2PRule, AvgG2PFeature
+from .config import PRON_TRAIN_FILE, PRON_TEST_FILE
 import pandas as pd
 from itertools import chain, cycle
 import re
 import tools.eval_funcs as eval_funcs
+
 
 def feature_cycles(features):
     result = []
@@ -20,6 +21,7 @@ def feature_cycles(features):
             result.append(cycle(feat))
     return result
 
+
 def tag_line(word, *feats):
     """
     word: a list of singleton strings, ie characters
@@ -29,6 +31,7 @@ def tag_line(word, *feats):
     """
     tagged_characters = ['￨'.join(chr_and_feats) for chr_and_feats in zip(word, *feature_cycles(feats))]
     return ' '.join(tagged_characters)
+
 
 def tag(data, side, *features):
     """
@@ -48,13 +51,16 @@ def tag(data, side, *features):
         return pd.Series(tagged_words, words.index)
     else:
         return data[side].copy() # copy necessary?
-        
+
+
 def epoch_number(path):
     return int(re.search(r'(?<=epoch)[0-9]+', path).group(0))
-    
+
+
 def negative_ppl(path):
     return -float(re.search(r'[0-9]+\.[0-9]+(?!\.t7)', path).group(0))
-    
+
+
 def dummy_feature(data):
     """
     data: the corpus table
@@ -62,14 +68,15 @@ def dummy_feature(data):
     """
     return data['src'].str.split()
 
+
 class G2PModel(object):
     
     opennmt_path = '/home/bpop/OpenNMT/'
     mg2p_path = '/home/bpop/thesis/mg2p'
     model_dir = 'models/'
     
-    training_corpus = '/home/bpop/thesis/mg2p/data/deri-knight/pron_data/gold_data_train'
-    test_corpus = '/home/bpop/thesis/mg2p/data/deri-knight/pron_data/gold_data_test'
+    training_corpus = PRON_TRAIN_FILE
+    test_corpus = PRON_TEST_FILE
     
     feature_lookup = {'langid': lambda data: data['lang'],
                         'rules':G2PRule().get_feature,
